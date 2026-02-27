@@ -9,7 +9,7 @@ const amount = document.getElementById("amount");
 const currency = document.getElementById("currency");
 const footer = document.querySelector("main footer");
 const description = document.getElementById("description");
-const result = documento.getElementById("result")
+const result = document.getElementById("result")
 
 // Manipulando o input amount para receber somente números
 amount.addEventListener("input", () => {
@@ -43,6 +43,9 @@ function convertCurrency(amount, price, symbol) {
     // Calcula o total
     let total = amount * price
     
+    // Formata e exibe o resultado final
+    result.textContent = `${(formatCurrencyBRL(total).replace("R$", ""))} Reais`
+    
     //Aplica a classe que exibe o footer para mostrar o resultado
     footer.classList.add("show-result")
   } catch (error) {
@@ -54,9 +57,21 @@ function convertCurrency(amount, price, symbol) {
   }
 }
 
+// Função para formatar a moeda
 function formatCurrencyBRL(value) {
   return Number(value).toLocaleString("pt-BR", {
     style: "currency",
     currency: "BRL"
   })
 }
+
+// Função para tratar o placeholder do input text, e salvar o valor do placeholder
+amount.addEventListener('focus', () => {
+  amount.dataset.placeholderOriginal = amount.placeholder;
+  amount.placeholder = "";
+})
+
+// Quando sair do input, retorna o placeholder
+amount.addEventListener('blur', () => {
+  amount.placeholder = amount.dataset.placeholderOriginal;
+})
